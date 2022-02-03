@@ -9,6 +9,7 @@ const {
   GraphQLSchema,
   GraphQLID,
   GraphQLInt,
+  GraphQLList,
 } = graphql;
 
 // DEMO DATA
@@ -17,6 +18,14 @@ const movies = [
   { name: 'Moonrise kingdom', genre: 'Romance', id: '2', directorId: '2' },
   { name: 'La La Land', genre: 'Musical', id: '3', directorId: '3' },
   { name: 'Interstellar', genre: 'Schi-Fi', id: '4', directorId: '4' },
+  {
+    name: 'The Grand Budapest Hotel',
+    genre: 'Comedy',
+    id: '5',
+    directorId: '2',
+  },
+  { name: 'Whiplash', genre: 'Drama', id: '6', directorId: '3' },
+  { name: 'First Name', genre: 'Biography', id: '7', directorId: '3' },
 ];
 const directors = [
   { name: 'Todd Philips', age: 60, id: '1' },
@@ -53,6 +62,17 @@ const directors = [
 //   }
 // }
 
+// {
+//   director(id:2){
+//     name
+//     age
+//     movies{
+//       name
+//       genre
+//     }
+//   }
+// }
+
 const MovieType = new GraphQLObjectType({
   name: 'Movie',
   fields: () => ({
@@ -77,6 +97,15 @@ const DirectorType = new GraphQLObjectType({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
     age: { type: GraphQLInt },
+    movies: {
+      type: new GraphQLList(MovieType),
+      resolve(parent, args) {
+        // get data from demo data
+        return _.filter(movies, { directorId: parent.id });
+        // // get data from database
+        // return Movie.find({ directorId: parent.id });
+      },
+    },
   }),
 });
 
