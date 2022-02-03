@@ -12,6 +12,7 @@ const {
   GraphQLList,
 } = graphql;
 
+//#region DEMO DATA AND GraphiQL TEST QUERIES
 // DEMO DATA
 const movies = [
   { name: 'Joker', genre: 'Drama', id: '1', directorId: '1' },
@@ -36,7 +37,7 @@ const directors = [
 
 // URL TO GraphiQL UI: http://localhost:5000/graphql
 
-// QUERIES FOR MOVIE, DIRECTOR
+// QUERIES FOR MOVIES
 // {
 //   movie(id:3){
 //     name
@@ -56,6 +57,18 @@ const directors = [
 // }
 
 // {
+//   movies{
+//     name
+//     genre
+//     director{
+//       name
+//       age
+//     }
+//   }
+// }
+
+// QUERIES FOR DIRECTORS
+// {
 //   director(id:3){
 //     name
 //     age
@@ -72,6 +85,18 @@ const directors = [
 //     }
 //   }
 // }
+
+// {
+//   directors{
+//     name
+//     age
+//     movies{
+//       name
+//       genre
+//     }
+//   }
+// }
+//#endregion
 
 const MovieType = new GraphQLObjectType({
   name: 'Movie',
@@ -131,6 +156,24 @@ const RootQuery = new GraphQLObjectType({
         return _.find(directors, { id: args.id });
         // // get data from database
         // return Director.findById(args.id);
+      },
+    },
+    movies: {
+      type: new GraphQLList(MovieType),
+      resolve(parent, args) {
+        // get data from demo data
+        return movies;
+        // // get data from database
+        //  return Movie.find({});
+      },
+    },
+    directors: {
+      type: new GraphQLList(DirectorType),
+      resolve(parent, args) {
+        // get data from demo data
+        return directors;
+        // get data from database
+        // return Director.find({});
       },
     },
   }),
