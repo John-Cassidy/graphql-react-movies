@@ -7,10 +7,10 @@ const { GraphQLObjectType, GraphQLString, GraphQLSchema } = graphql;
 
 // DEMO DATA
 const movies = [
-  { name: 'Joker', genre: 'Drama', id: 1 },
-  { name: 'Moonrise kingdom', genre: 'Romance', id: 2 },
-  { name: 'La La Land', genre: 'Musical', id: 3 },
-  { name: 'Interstellar', genre: 'Schi-Fi', id: 4 },
+  { name: 'Joker', genre: 'Drama', id: '1' },
+  { name: 'Moonrise kingdom', genre: 'Romance', id: '2' },
+  { name: 'La La Land', genre: 'Musical', id: ' 3' },
+  { name: 'Interstellar', genre: 'Schi-Fi', id: '4' },
 ];
 
 // movie(id: '5'){
@@ -35,6 +35,7 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLString } },
       resolve(parent, args) {
         //get data from demo data
+        // console.log(_.find(movies, { id: args.id }));
         return _.find(movies, { id: args.id });
         // // get data from database
         // return Movie.findById(args.id);
