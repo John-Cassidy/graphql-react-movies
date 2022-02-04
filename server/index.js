@@ -37,6 +37,19 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // SETUP MONGOOSE DB CONFIGURATION
+mongoose
+  .connect(DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    // eslint-disable-next-line no-console
+    console.log('DB connection successful!');
+  })
+  .catch((err) => {
+    console.log(err.message);
+    throw new Error('DB connection failed! ' + err.message);
+  });
 
 // SETUP GRAPHQL CONFIGURATION
 app.use(

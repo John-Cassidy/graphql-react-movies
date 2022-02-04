@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 
 const movieSchema = new Schema({
   name: String,
-  age: Number,
+  genre: String,
+  directorId: String,
 });
 
 export default mongoose.model('Movie', movieSchema);

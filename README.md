@@ -19,6 +19,11 @@ npm i cors
 npm i graphql express-graphql
 npm i lodash
 
+## client
+
+create react app
+use apollo for graphql requests
+
 ## database
 
 setup MongoDB in docker container. [Official docker image](https://hub.docker.com/_/mongo)
@@ -38,11 +43,112 @@ DATABASE_LOCAL=mongodb://localhost:27017/graphql-react-movies
 DATABASE_USERNAME=[username]
 DATABASE_PASSWORD=[password]
 
-## client
+### MongoDB UI Client
 
-create react app
-use apollo for graphql requests
+use graphiQL by adding it into app.use statement in index.js
 
-### dummy frontend
+app.use('/graphql', graphqlHTTP({
+schema,
+graphiql: true
+}));
 
-use graphiQL
+#### URL TO GraphiQL UI: http://localhost:5000/graphql
+
+#### QUERIES FOR MOVIES
+
+```json
+{
+    movie(id:3){
+        name
+        genre
+    }
+}
+{
+    movie(id: "2"){
+        name
+        genre
+        director{
+            name
+            age
+        }
+    }
+}
+{
+    movies{
+        name
+        genre
+        director{
+            name
+            age
+        }
+    }
+}
+{
+    movies{
+        name
+        genre
+        director{
+            name
+            age
+            movies{
+                name
+            }
+        }
+    }
+}
+```
+
+#### QUERIES FOR DIRECTORS
+
+```json
+{
+    director(id:3){
+        name
+        age
+    }
+}
+{
+    director(id:2){
+        name
+        age
+        movies{
+            name
+            genre
+        }
+    }
+}
+{
+    directors{
+        name
+        age
+        movies{
+            name
+            genre
+        }
+    }
+}
+```
+
+#### MUTATIONS FOR DIRECTORS
+
+```json
+mutation{
+    addDirector(name:"Christopher Nolan", age: 51){
+        name
+        age
+        id
+    }
+}
+```
+
+#### MUTATIONS FOR MOVIES
+
+```json
+mutation{
+    addMovie(name:"Joker", genre: "Drama", directorId: 1){
+        name
+        genre
+        directorId
+    }
+}
+```
