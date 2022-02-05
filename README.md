@@ -24,6 +24,8 @@ npm i lodash
 create react app
 use apollo for graphql requests
 
+> npx create-react-app client
+
 ## database
 
 setup MongoDB in docker container. [Official docker image](https://hub.docker.com/_/mongo)
