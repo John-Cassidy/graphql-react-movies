@@ -1,21 +1,16 @@
+import {
+  ADD_MOVIE_MUTATION,
+  GET_DIRECTORS_QUERY,
+  GET_MOVIES_QUERY,
+} from '../queries/queries';
 import React, { useState } from 'react';
-import { gql, useQuery } from '@apollo/client';
-
-const GET_DIRECTORS_QUERY = gql`
-  {
-    directors {
-      name
-      age
-      id
-    }
-  }
-`;
+import { useMutation, useQuery } from '@apollo/client';
 
 function AddMovie() {
-  // const [name, setName] = useState('');
-  // const [genre, setGenre] = useState('');
-  // const [directorId, setDirectorId] = useState('');
-
+  const [name, setName] = useState('');
+  const [genre, setGenre] = useState('');
+  const [directorId, setDirectorId] = useState('');
+  const [addMovie] = useMutation(ADD_MOVIE_MUTATION);
   const { loading, data, error } = useQuery(GET_DIRECTORS_QUERY);
 
   const renderDirectors = () => {
@@ -31,6 +26,19 @@ function AddMovie() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (name && genre && directorId) {
+      addMovie({
+        variables: {
+          name,
+          genre,
+          directorId,
+        },
+        refetchQueries: [{ query: GET_MOVIES_QUERY }],
+      });
+      console.log(name, genre, directorId);
+    } else {
+      alert('You can not add empty form');
+    }
   };
 
   return (
@@ -46,7 +54,7 @@ function AddMovie() {
           id='movie-name'
           name='movie-name'
           type='text'
-          // onChange={(e) => setName(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
         />
       </div>
       <div className='form-group mt-2'>
@@ -56,7 +64,7 @@ function AddMovie() {
           id='genre'
           name='genre'
           type='text'
-          // onChange={(e) => setGenre(e.target.value)}
+          onChange={(e) => setGenre(e.target.value)}
         />
       </div>
       <div className='d-flex flex-column mt-2'>
@@ -65,7 +73,7 @@ function AddMovie() {
           className='custom-select py-2'
           id='director'
           name='director'
-          // onChange={(e) => setDirectorId(e.target.value)}
+          onChange={(e) => setDirectorId(e.target.value)}
         >
           <option>Select a Director</option>
           {renderDirectors()}
